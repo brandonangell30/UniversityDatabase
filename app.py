@@ -6,8 +6,9 @@ app = Flask(__name__)
 
 #Connect to db
 class Database:
-    def __init__(self, host='dbdev.cs.kent.edu', user='bangell', 
-                 password='HddI9ly5', db='bangell'):
+    #input your user and pass
+    def __init__(self, host='', user='', 
+                 password='', db=''):
         self.host = host
         self.user = user
         self.password = password
