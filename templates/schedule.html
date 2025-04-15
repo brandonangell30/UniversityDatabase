@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Schedule{% endblock %}
+
+{% block content %}
+    <h2>Schedule for {{ student.name }} (ID: {{ student.ID }})</h2>
+    
+    {% if courses %}
+        <div class="filter-controls">
+            <form action="{{ url_for('view_schedule', student_id=student.ID) }}" method="GET">
+                <label for="year-filter">Filter by Year:</label>
+                <select id="year-filter" name="year" onchange="this.form.submit()">
+                    <option value="">All Years</option>
+                    {% for year in years %}
+                    <option value="{{ year }}" {% if year|string == selected_year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+        
+        <table id="schedule-table">
+            <thead>
+                <tr>
+                    <th>Course ID</th>
+                    <th>Section</th>
+                    <th>Title</th>
+                    <th>Semester</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr class="course-row">
+                    <td>{{ course.course_id }}</td>
+                    <td>{{ course.sec_id }}</td>
+                    <td>{{ course.title }}</td>
+                    <td>{{ course.semester }}</td>
+                    <td>{{ course.year }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No courses found for this student.</p>
+    {% endif %}
+    
+    <a href="{{ url_for('search_results') }}">Back to Search</a>
+{% endblock %}

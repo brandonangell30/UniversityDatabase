@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+    <h2>Search Students</h2>
+
+    <div class="search-form">
+        <h3>Search by Name</h3>
+        <form action="{{ url_for('search_results') }}" method="POST">
+            <input type="hidden" name="search_type" value="name">
+            <label for="query">Enter partial name:</label>
+            <input type="text" id="query" name="query" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="search-form">
+        <h3>Search by ID</h3>
+        <form action="{{ url_for('search_results') }}" method="POST">
+            <input type="hidden" name="search_type" value="id">
+            <label for="query_id">Enter partial ID:</label>
+            <input type="text" id="query_id" name="query" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <hr>
+
+    <h2>Search Results for "{{ search_term }}"</h2>
+    
+    {% if students %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Total Credits</th>
+                    <th>Schedule</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.ID }}</td>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.dept_name }}</td>
+                    <td>{{ student.total_credits }}</td>
+                    <td>
+                        <a href="{{ url_for('view_schedule', student_id=student.ID) }}">View Schedule</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No students found matching your search criteria.</p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}">Back to Home</a>
+{% endblock %}
